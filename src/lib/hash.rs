@@ -1,5 +1,5 @@
 /************************************************************************
-* pk:61a912af202f8a78eda7fcd14a040ca73f90ef90807d56e6a13d0232ecbbb6dc
+* pk:4a3442ad21eb564167b451ce148286a3b0bec591e9e634165b94516df4cec648
 ************************************************************************/
 //!hash Module.
 
@@ -27,7 +27,7 @@ pub trait HashExt {
 	/// use std::fs;
 	/// use std::io;
 	/// fn main() -> io::Result<()> {
-	/// 	let file = fs::File::open("/home/user01/Pictures/image01.png")?;
+	/// 	let file = fs::File::open("/home/ph0llux/Pictures/image01.png")?;
 	/// 	println!("{:?}", file.md5sum());
 	/// 	Ok(())
 	/// }
@@ -43,7 +43,7 @@ pub trait HashExt {
 	/// use std::fs;
 	/// use std::io;
 	/// fn main() -> io::Result<()> {
-	/// 	let file = fs::File::open("/home/user01/Pictures/image01.png")?;
+	/// 	let file = fs::File::open("/home/ph0llux/Pictures/image01.png")?;
 	/// 	println!("{:?}", file.sha1sum());
 	/// 	Ok(())
 	/// }
@@ -59,7 +59,7 @@ pub trait HashExt {
 	/// use std::fs;
 	/// use std::io;
 	/// fn main() -> io::Result<()> {
-	/// 	let file = fs::File::open("/home/user01/Pictures/image01.png")?;
+	/// 	let file = fs::File::open("/home/ph0llux/Pictures/image01.png")?;
 	/// 	println!("{:?}", file.sha256sum());
 	/// 	Ok(())
 	/// }
@@ -75,7 +75,7 @@ pub trait HashExt {
 	/// use std::fs;
 	/// use std::io;
 	/// fn main() -> io::Result<()> {
-	/// 	let file = fs::File::open("/home/user01/Pictures/image01.png")?;
+	/// 	let file = fs::File::open("/home/ph0llux/Pictures/image01.png")?;
 	/// 	println!("{:?}", file.sha384sum());
 	/// 	Ok(())
 	/// }
@@ -91,7 +91,7 @@ pub trait HashExt {
 	/// use std::fs;
 	/// use std::io;
 	/// fn main() -> io::Result<()> {
-	/// 	let file = fs::File::open("/home/user01/Pictures/image01.png")?;
+	/// 	let file = fs::File::open("/home/ph0llux/Pictures/image01.png")?;
 	/// 	println!("{:?}", file.sha512sum());
 	/// 	Ok(())
 	/// }

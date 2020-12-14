@@ -1,5 +1,5 @@
 /************************************************************************
-* pk:b7b3b7ac55f7c927aa97588ffa4887c3ff9a0834a5f750cf6ed2560d2e588d85
+* pk:45a53fa8ec330c1e0977d9ba821f200c89b789bd07a1a2aac5dffe1787b191c5
 ************************************************************************/
 //!tar Module.
 
@@ -26,7 +26,7 @@ pub trait TarBuilderExt {
 	///
 	/// fn main() {
 	/// 	let b = Builder::new("/tmp/archive.tar");
-	/// 	b.append_file("/home/user01/example01.png"); //appends a file (absoulte path)
+	/// 	b.append_file("/home/ph0llux/example01.png"); //appends a file (absoulte path)
 	/// 	b.append("example02.png"); //appends a file (relative path)
 	/// 	b.close_archive();
 	/// }
@@ -45,7 +45,7 @@ pub trait TarBuilderExt {
 	/// fn main() {
 	/// 	let b = Builder::new("/tmp/archive.tar");
 	/// 	let content = "this is an example text";
-	/// 	let filename_in_archive = "/home/user01/example01.txt";
+	/// 	let filename_in_archive = "/home/ph0llux/example01.txt";
 	/// 	b.append_text(filename_in_archive, content);
 	/// 	b.close_archive();
 	/// }

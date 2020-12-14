@@ -30,8 +30,8 @@ pub trait ToIOResult<T> {
 
 impl<T, E: ToString> ToIOResult<T> for Result<T, E> {
 	/// # Example
-	///	extern crate phollaits;
-	///	use phollaits::*;
+	/// extern crate phollaits;
+	/// use phollaits::*;
 	/// use std::io;
 	///
 	/// fn main() -> io::Result<()> {
@@ -49,8 +49,8 @@ impl<T, E: ToString> ToIOResult<T> for Result<T, E> {
 
 impl<T> ToIOResult<T> for Option<T> {
 	/// # Example
-	///	extern crate phollaits;
-	///	use phollaits::*;
+	/// extern crate phollaits;
+	/// use phollaits::*;
 	/// use std::io;
 	///
 	/// fn main() -> io::Result<()> {
