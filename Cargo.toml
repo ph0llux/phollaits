@@ -1,0 +1,28 @@
+[package]
+name = "phollaits"
+version = "0.1.0"
+authors = ["ph0llux <ph0llux@pm.me>"]
+edition = "2018"
+publish = true
+license-file = "LICENSE"
+homepage = "https://github.com/ph0llux/phollaits"
+repository = "https://github.com/ph0llux/phollaits"
+keywords = [ "traits" ]
+description = """
+Here is a collection of traits that I use in my projects from time to time -
+feel free to use them in your projects as well.
+"""
+
+[lib]
+name = "phollaits"
+path = "src/lib/mod.rs"
+test = true
+bench = true
+edition = "2018"
+crate-type = ["lib"]
+
+[dependencies]
+ring = "0.16"
+md5  = "0.7"
+data-encoding = "2"
+tar = "0.4"
