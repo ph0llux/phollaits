@@ -1,6 +1,6 @@
 [package]
 name = "phollaits"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["ph0llux <ph0llux@pm.me>"]
 edition = "2018"
 publish = true

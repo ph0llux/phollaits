@@ -1,5 +1,5 @@
 /************************************************************************
-* pk:f3e6cdbe65422da7d4878e43365373946ffd89fff7964d8901ff865cd50d0aa2
+* pk:dc1cb6f830b84b653fed59e2aabf3ebc3b265f536c2590d090847ea5e46f7f76
 ************************************************************************/
 
 // - STD
@@ -34,11 +34,12 @@ impl BoolExtensions for bool {
 /// Trait contains some extensions for [Option].
 pub trait OptionExtensions<T> {
 	fn to_string_option(self) -> Option<String>;
+	fn to_string(self) -> String;
 }
 
 impl<T: ToString> OptionExtensions<T> for Option<T> {
 	/// method to allow a conversion of Option<str> to Option<String> directly.
-	/// # Example to expand tilda
+	/// # Example
 	/// ```rust
 	///
 	/// extern crate phollaits;
@@ -53,6 +54,24 @@ impl<T: ToString> OptionExtensions<T> for Option<T> {
 		match self {
 			Some(x) => Some(x.to_string()),
 			None => None,
+		}
+	}
+
+	/// method to allow a conversion of Option<T> to String directly (if T implements the [ToString]-trait).
+	/// # Example
+	/// ```rust
+	///
+	/// extern crate phollaits;
+	/// use phollaits::*;
+	/// fn main() {
+	/// 		let a = Some("test");
+	///			assert_eq!("test".to_string(), a.to_string())
+	/// }
+	/// ```
+	fn to_string(self) -> String {
+		match self {
+			Some(x) => x.to_string(),
+			None => phollaits::NONE.to_string()
 		}
 	}
 }

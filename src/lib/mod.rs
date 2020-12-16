@@ -1,5 +1,5 @@
 /************************************************************************
-* pk:ab73b87b871d625e8281c8af3e62b2da87c027661dd224e7fe91a6b732d2defe
+* pk:8fbbee445d9e8d715fa0fae458fda6cd05ed88e79e180c42ce03b925d142e9bd
 ************************************************************************/
 // 
 // - STD
@@ -30,6 +30,7 @@ pub trait ToIOResult<T> {
 
 impl<T, E: ToString> ToIOResult<T> for Result<T, E> {
 	/// # Example
+	///	```rust
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	/// use std::io;
@@ -39,6 +40,7 @@ impl<T, E: ToString> ToIOResult<T> for Result<T, E> {
 	///		println!("{:?}", a.to_io_result()?);
 	///		Ok(())
 	/// }
+	/// ```
 	fn to_io_result(self) -> io::Result<T> {
 		match self {
 			Ok(x) => Ok(x),
@@ -49,6 +51,7 @@ impl<T, E: ToString> ToIOResult<T> for Result<T, E> {
 
 impl<T> ToIOResult<T> for Option<T> {
 	/// # Example
+	/// ```rust
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	/// use std::io;
@@ -58,6 +61,7 @@ impl<T> ToIOResult<T> for Option<T> {
 	///		println!("{:?}", a.to_io_result()?);
 	///		Ok(())
 	/// }
+	/// ```
 	fn to_io_result(self) -> io::Result<T> {
 		match self {
 			Some(x) => Ok(x),
