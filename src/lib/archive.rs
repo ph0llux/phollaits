@@ -26,12 +26,12 @@ pub trait TarBuilderExt {
 	///
 	/// fn main() {
 	/// 	let b = Builder::new("/tmp/archive.tar");
-	/// 	b.append_file("/home/ph0llux/example01.png"); //appends a file (absoulte path)
-	/// 	b.append("example02.png"); //appends a file (relative path)
+	/// 	b.append_file_as_it_is("/home/ph0llux/example01.png"); //appends a file (absoulte path)
+	/// 	b.append_file_as_it_is("example02.png"); //appends a file (relative path)
 	/// 	b.close_archive();
 	/// }
 	/// ```
-	fn append_file<P: Into<String>>(&mut self, path: P);
+	fn append_file_as_it_is<P: Into<String>>(&mut self, path: P);
 
 	/// appends a text (string) to an archive.
 	/// # Example
@@ -60,7 +60,7 @@ pub trait TarBuilderExt {
 }
 
 impl TarBuilderExt for Builder<File> {
-	fn append_file<P: Into<String>>(&mut self, path: P) {
+	fn append_file_as_it_is<P: Into<String>>(&mut self, path: P) {
 		let path = path.into();
 		if Path::new(&path).is_absolute() {
 			&self.append_path_with_name(&path, &path[1..])
