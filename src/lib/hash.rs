@@ -10,11 +10,11 @@ use std::io::Read;
 
 // 
 // - external
-extern crate ring;
 use data_encoding::HEXUPPER;
 use md5::Context as Md5Context;
 use ring::digest::Context as ShaContext;
 use ring::digest::{SHA1_FOR_LEGACY_USE_ONLY, SHA256, SHA384, SHA512};
+use tar::Entry;
 
 /// This trait implements several hash-algorithms for any type which implements the [io::Read]-Trait.
 pub trait HashExt {
@@ -172,6 +172,78 @@ impl HashExt for dyn io::Read {
 }
 
 impl HashExt for std::fs::File {
+	fn md5sum(&mut self) -> io::Result<String> {
+		let mut context = Md5Context::new();
+		let mut buffer = [0; 1024];
+		loop {
+			let count = self.read(&mut buffer)?;
+			if count == 0 {
+				break;
+			}
+			context.consume(&buffer[..count]);
+		}
+		let context = context.compute();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha1sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
+		let mut buffer = [0; 1024];
+		loop {
+			let count = self.read(&mut buffer)?;
+			if count == 0 {
+				break;
+			}
+			context.update(&buffer[..count]);
+		}
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha256sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA256);
+		let mut buffer = [0; 1024];
+		loop {
+			let count = self.read(&mut buffer)?;
+			if count == 0 {
+				break;
+			}
+			context.update(&buffer[..count]);
+		}
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha384sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA384);
+		let mut buffer = [0; 1024];
+		loop {
+			let count = self.read(&mut buffer)?;
+			if count == 0 {
+				break;
+			}
+			context.update(&buffer[..count]);
+		}
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha512sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA512);
+		let mut buffer = [0; 1024];
+		loop {
+			let count = self.read(&mut buffer)?;
+			if count == 0 {
+				break;
+			}
+			context.update(&buffer[..count]);
+		}
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+}
+
+impl<R: io::Read> HashExt for Entry<'_, R> {
 	fn md5sum(&mut self) -> io::Result<String> {
 		let mut context = Md5Context::new();
 		let mut buffer = [0; 1024];
