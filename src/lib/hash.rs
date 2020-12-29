@@ -16,7 +16,7 @@ use ring::digest::Context as ShaContext;
 use ring::digest::{SHA1_FOR_LEGACY_USE_ONLY, SHA256, SHA384, SHA512};
 use tar::Entry;
 
-/// This trait implements several hash-algorithms for any type which implements the [io::Read]-Trait.
+/// This trait implements several hash-algorithms for several types.
 pub trait HashExt {
 	/// this method returns the md5-digest for implemented types as a [std::io::Result]
 	/// of [String].
@@ -310,6 +310,80 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 			}
 			context.update(&buffer[..count]);
 		}
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+}
+
+impl HashExt for String {
+	fn md5sum(&mut self) -> io::Result<String> {
+		let mut context = Md5Context::new();
+		context.consume(self.as_bytes());
+		let context = context.compute();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha1sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
+		context.update(self.as_bytes());
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha256sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA256);
+		context.update(self.as_bytes());
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha384sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA384);
+		context.update(self.as_bytes());
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha512sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA512);
+		context.update(self.as_bytes());
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+}
+
+impl HashExt for u64 {
+	fn md5sum(&mut self) -> io::Result<String> {
+		let mut context = Md5Context::new();
+		context.consume(self.to_be_bytes());
+		let context = context.compute();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha1sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
+		context.update(&self.to_be_bytes());
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha256sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA256);
+		context.update(&self.to_be_bytes());
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha384sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA384);
+		context.update(&self.to_be_bytes());
+		let context = context.finish();
+		Ok(HEXUPPER.encode(context.as_ref()))
+	}
+
+	fn sha512sum(&mut self) -> io::Result<String> {
+		let mut context = ShaContext::new(&SHA512);
+		context.update(&self.to_be_bytes());
 		let context = context.finish();
 		Ok(HEXUPPER.encode(context.as_ref()))
 	}
