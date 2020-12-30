@@ -107,3 +107,29 @@ impl StringExt for String {
 		self
 	}
 }
+
+/// Trait contains some extensions for [Vec].
+pub trait VecExt {
+	/// method to convert into Vec<String>.
+	fn to_vec_string(self) -> Vec<String>;
+}
+
+impl VecExt for Vec<&str> {
+	/// method to convert Vec<&str> into Vec<String>.
+	/// # Example to expand tilda
+	/// ```rust
+	/// extern crate phollaits;
+	/// use phollaits::*;
+	/// 
+	///	const a: [&'static str; 6] = [ "a", "b", "c" ];
+	///
+	/// fn main() {
+	/// 	let b = a.to_vec;
+	///		let c = vec!("a".to_string(), "b".to_string(), "c".to_string());
+	/// 	assert_eq!(b.to_vec_string, c);
+	/// }
+	/// ```
+	fn to_vec_string(self) -> Vec<String> {
+		self.into_iter().map(Into::into).collect()
+	}
+}
