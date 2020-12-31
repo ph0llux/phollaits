@@ -1,5 +1,5 @@
 /************************************************************************
-* pk:8fbbee445d9e8d715fa0fae458fda6cd05ed88e79e180c42ce03b925d142e9bd
+* pk:5c663f3cf8e99112c83901fd11c959a00850006dfe98ce3064b3e625be1ccd41
 ************************************************************************/
 // 
 // - STD
@@ -16,12 +16,14 @@ extern crate ring;
 pub use archive::*;
 pub use hash::*;
 pub use stdext::*;
+pub use converter::*;
 
 // 
 // - modules
 mod archive;
 mod hash;
 mod stdext;
+mod converter;
 
 pub trait ToIOResult<T> {
 	/// method to convert the underlying type to a [std::io::Result].

@@ -1,7 +1,7 @@
 /************************************************************************
-* pk:dc1cb6f830b84b653fed59e2aabf3ebc3b265f536c2590d090847ea5e46f7f76
+* pk:78ed70e6c325b60f4e9eddbcfbe76959207fb6f8eaa74281350606cf6fc03b52
 ************************************************************************/
-
+//! stdext module
 // - STD
 use std::env;
  
@@ -116,7 +116,7 @@ pub trait VecExt {
 
 impl VecExt for Vec<&str> {
 	/// method to convert Vec<&str> into Vec<String>.
-	/// # Example to expand tilda
+	/// # Example
 	/// ```rust
 	/// extern crate phollaits;
 	/// use phollaits::*;
