@@ -1,17 +1,18 @@
 /************************************************************************
-* pk:45a53fa8ec330c1e0977d9ba821f200c89b789bd07a1a2aac5dffe1787b191c5
+* pk:cf9b30f05307353367f52036b5309b6b1122f82a69cb6820c505ce7fee71b886
 ************************************************************************/
 //!tar Module.
 
 // 
 // - STD
 use std::fs::File;
+use std::time::SystemTime;
 use std::io;
 use std::path::Path;
 
 // 
 // - external
-use tar::{Builder, Header};
+use tar::{Builder,Header,EntryType};
 
 /// Trait implements some extensions for the [Builder](https://docs.rs/tar/0.4.30/tar/struct.Builder.html)-struct of the [tar](https://docs.rs/tar/0.4.30/tar/) crate.
 pub trait TarBuilderExt {
@@ -33,7 +34,7 @@ pub trait TarBuilderExt {
 	/// ```
 	fn append_file_directly<P: Into<String>>(&mut self, path: P) -> io::Result<()>;
 
-	/// appends a text (string) to an archive.
+	/// appends a text (string) to an archive. The text will be written as a textfile, with the "unix-like" file permissions 644.
 	/// # Example
 	/// ```rust
 	/// extern crate tar;
@@ -74,6 +75,12 @@ impl TarBuilderExt for Builder<File> {
 		let mut header = Header::new_gnu();
 		header.set_size(text.len() as u64); //header size must be == size of string in bytes.
 		header.set_cksum();
+		header.set_mode(420); //the value will be converted into octal (420 -> 644, 40 -> 50, ...)
+		header.set_entry_type(EntryType::file());
+		match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) { //sets the current time as mtime for the file
+			Ok(n) => header.set_mtime(n.as_secs()),
+			Err(_) => ()
+		};
 		self.append_data(&mut header, &filename, text.as_bytes())
 	}
 	fn close_archive(mut self) -> io::Result<()> {

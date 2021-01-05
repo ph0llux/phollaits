@@ -1,10 +1,10 @@
 [package]
 name = "phollaits"
-version = "0.1.4"
+version = "0.2.1"
 authors = ["ph0llux <ph0llux@pm.me>"]
 edition = "2018"
 publish = true
-license-file = "LICENSE"
+license = "BSD-3-Clause"
 homepage = "https://github.com/ph0llux/phollaits"
 repository = "https://github.com/ph0llux/phollaits"
 keywords = [ "traits" ]
