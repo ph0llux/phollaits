@@ -56,7 +56,7 @@ pub trait TarBuilderExt {
 	/// method. This method is used solely for embellishment purposes.
 	/// you can call the [into_inner()](https://docs.rs/tar/0.4.30/tar/struct.Builder.html#method.into_inner)
 	/// method directly.
-	fn close_archive(self) -> io::Result<File>;
+	fn close_archive(self) -> io::Result<()>;
 }
 
 impl TarBuilderExt for Builder<File> {
@@ -76,7 +76,29 @@ impl TarBuilderExt for Builder<File> {
 		header.set_cksum();
 		self.append_data(&mut header, &filename, text.as_bytes())
 	}
-	fn close_archive(self) -> io::Result<File> {
-		self.into_inner()
+	fn close_archive(mut self) -> io::Result<()> {
+		self.finish()
+	}
+}
+
+impl TarBuilderExt for Builder<Box<dyn io::Write>> {
+	fn append_file_directly<P: Into<String>>(&mut self, path: P) -> io::Result<()> {
+		let path = path.into();
+		if Path::new(&path).is_absolute() {
+			return self.append_path_with_name(&path, &path[1..]);
+		} else {
+			return self.append_path(path);
+		};
+	}
+	fn append_text<F: Into<String>, T: Into<String>>(&mut self, filename: F, text: T) -> io::Result<()> {
+		let filename = filename.into();
+		let text = text.into();
+		let mut header = Header::new_gnu();
+		header.set_size(text.len() as u64); //header size must be == size of string in bytes.
+		header.set_cksum();
+		self.append_data(&mut header, &filename, text.as_bytes())
+	}
+	fn close_archive(mut self) -> io::Result<()> {
+		self.finish()
 	}
 }
