@@ -1,6 +1,6 @@
 [package]
 name = "phollaits"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["ph0llux <ph0llux@pm.me>"]
 edition = "2018"
 publish = true
@@ -26,3 +26,4 @@ ring = "0.16"
 md5  = "0.7"
 data-encoding = "2"
 tar = "0.4"
+base64 = "0.13"

@@ -1,5 +1,5 @@
 /************************************************************************
-* pk:5c663f3cf8e99112c83901fd11c959a00850006dfe98ce3064b3e625be1ccd41
+* pk:862adfbe70918b2252d0781ee2611feb128c23de3438c65da28808805d6d2def
 ************************************************************************/
 // 
 // - STD
@@ -10,6 +10,7 @@ use std::io;
 extern crate data_encoding;
 extern crate md5;
 extern crate ring;
+extern crate base64;
 
 // 
 // - internal
@@ -17,6 +18,7 @@ pub use archive::*;
 pub use hash::*;
 pub use stdext::*;
 pub use converter::*;
+pub use encoder::*;
 
 // 
 // - modules
@@ -24,6 +26,7 @@ mod archive;
 mod hash;
 mod stdext;
 mod converter;
+mod encoder;
 
 pub trait ToIOResult<T> {
 	/// method to convert the underlying type to a [std::io::Result].
