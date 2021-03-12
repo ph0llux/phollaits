@@ -1,5 +1,5 @@
 /************************************************************************
-* pk:1600f58ca38a6d6221527b0b131cc9e980c40be6492c79ce9753b848b9e93716
+* pk:ce86018792133a7ee2ecf65b3685a0e237998978565d75557abbbffbd2d1ca58
 ************************************************************************/
 //! stdext module
 // - STD
@@ -86,11 +86,25 @@ pub trait StringExt {
 	///
 	/// fn main() {
 	/// 	let a = "~/projects/phollaits".to_string();
-	/// 	let b = s.shellexpand();
+	/// 	let b = a.shellexpand();
 	/// 	assert_eq!(b, "/home/ph0llux/projects/phollaits".to_string());
 	/// }
 	/// ```
 	fn shellexpand(self) -> String;
+
+	/// method to trims newline at the end of the string.
+	/// # Example to expand tilda
+	/// ```rust
+	/// extern crate phollaits;
+	/// use phollaits::*;
+	///
+	/// fn main() {
+	/// 	let a = "This \n is \n a \n string\n\n\r\n".to_string();
+	/// 	let b = a.trim_newline_end();
+	/// 	assert_eq!(b, String::from("This \n is \n a \n string"));
+	/// }
+	/// ```
+	fn trim_newline_end(&self) -> String;
 }
 
 impl StringExt for String {
@@ -105,6 +119,49 @@ impl StringExt for String {
 			}
 		}
 		self
+	}
+
+	fn trim_newline_end(&self) -> String {
+		let mut trimmed_string = self.clone();
+		loop {
+			if trimmed_string.ends_with('\n') {
+				trimmed_string.pop();
+			} else if trimmed_string.ends_with('\r') {
+				trimmed_string.pop();
+			} else {
+				break;
+			}
+		}
+	    String::from(trimmed_string)
+	}
+}
+
+impl StringExt for &str {
+	fn shellexpand(self) -> String {
+		if self.contains(phollaits::FORMAT_TILDA) {
+			match env::var_os(phollaits::ENV_VAR_HOME) {
+				Some(x) => match x.to_str() {
+					Some(x) => return self.replace(phollaits::FORMAT_TILDA, x),
+					None => return self.to_string(),
+				},
+				None => return self.to_string(),
+			}
+		}
+		self.to_string()
+	}
+	
+	fn trim_newline_end(&self) -> String {
+		let mut trimmed_string = self.to_string();
+		loop {
+			if trimmed_string.ends_with('\n') {
+				trimmed_string.pop();
+			} else if trimmed_string.ends_with('\r') {
+				trimmed_string.pop();
+			} else {
+				break;
+			}
+		}
+	    String::from(trimmed_string)
 	}
 }
 
