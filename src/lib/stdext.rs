@@ -1,9 +1,10 @@
 /*************************************************************************
-* ph0llux:b33a719af9521e5a29876b3f57c7131a8c9f9c216a96d125b3b8ccdc8a11a1b5
+* ph0llux:f8d89970ef41b3cc94a19be386c2fde11f8653d2a085dd0d6bd7fbf2d99f42e3
 *************************************************************************/
 //! stdext module
 // - STD
 use std::env;
+use std::num::ParseIntError;
  
 // - internal
 use crate as phollaits;
@@ -105,6 +106,16 @@ pub trait StringExt {
 	/// }
 	/// ```
 	fn trim_newline_end(&self) -> String;
+
+	/// converts a 'hexified' String to a Vec of Bytes.
+	/// # Example
+	/// fn main() -> Result<(), ParseIntError> {
+	/// 	let m = "6f5902ac237024bdd0c176cb93063dc4".to_string();
+	/// 	let m_as_bytes = m.hex_to_bytes()?;
+	/// 	assert_eq!(m_as_bytes, [111, 89, 2, 172, 35, 112, 36, 189, 208, 193, 118, 203, 147, 6, 61, 196]);
+	/// 	Ok(())
+	/// }
+	fn hex_to_bytes(self) -> Result<Vec<u8>, ParseIntError>;
 }
 
 impl StringExt for String {
@@ -134,6 +145,19 @@ impl StringExt for String {
 		}
 	    String::from(trimmed_string)
 	}
+
+	fn hex_to_bytes(self) -> Result<Vec<u8>, ParseIntError> {
+		fn inner_hex_to_bytes(s: &str) -> Result<u8, ParseIntError> {
+		    u8::from_str_radix(s, 16).map(|n| n as u8)
+		}
+	    let mut chunks = Vec::new();
+	    let mut z = self.chars().peekable();
+	    while z.peek().is_some() {
+	    	let chunk: String = z.by_ref().take(2).collect();
+	    	chunks.push(chunk)
+	    }
+	    chunks.into_iter().map(|x| inner_hex_to_bytes(&x)).collect()
+	}
 }
 
 impl StringExt for &str {
@@ -162,6 +186,19 @@ impl StringExt for &str {
 			}
 		}
 	    String::from(trimmed_string)
+	}
+
+	fn hex_to_bytes(self) -> Result<Vec<u8>, ParseIntError> {
+		fn inner_hex_to_bytes(s: &str) -> Result<u8, ParseIntError> {
+		    u8::from_str_radix(s, 16).map(|n| n as u8)
+		}
+	    let mut chunks = Vec::new();
+	    let mut z = self.chars().peekable();
+	    while z.peek().is_some() {
+	    	let chunk: String = z.by_ref().take(2).collect();
+	    	chunks.push(chunk)
+	    }
+	    chunks.into_iter().map(|x| inner_hex_to_bytes(&x)).collect()
 	}
 }
 
