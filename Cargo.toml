@@ -3,7 +3,7 @@
 ##########################################################################
 [package]
 name = "phollaits"
-version = "0.2.7"
+version = "0.2.8"
 authors = ["ph0llux <ph0llux@pm.me>"]
 edition = "2018"
 publish = true
