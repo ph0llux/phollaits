@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:45edee0b2db9931f489c8b42741197b2c535ae968d87718e849d366545d345d8
+* ph0llux:ff33ab063141c2f6864e2031c29ae23326ee42f90ca77ab29f025b0751e9c76e
 *************************************************************************/
 
 // - external
@@ -28,5 +28,11 @@ impl ToBase64 for String {
 impl ToBase64 for &str {
 	fn base64(self) -> String {
 		encode(self.as_bytes())
+	}
+}
+
+impl ToBase64 for Vec<u8> {
+	fn base64(self) -> String {
+		encode(self)
 	}
 }
