@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:f8d89970ef41b3cc94a19be386c2fde11f8653d2a085dd0d6bd7fbf2d99f42e3
+* ph0llux:7e8f52f4de01e2da71f71e2071d5501c6c9c3000cb14edd4a93a73bb01802cb5
 *************************************************************************/
 //! stdext module
 // - STD
@@ -8,6 +8,7 @@ use std::num::ParseIntError;
  
 // - internal
 use crate as phollaits;
+use phollaits::{PhollaitsError, Result};
 
 /// Trait contains some extensions for [bool].
 pub trait BoolExtensions {
@@ -109,13 +110,13 @@ pub trait StringExt {
 
 	/// converts a 'hexified' String to a Vec of Bytes.
 	/// # Example
-	/// fn main() -> Result<(), ParseIntError> {
+	/// fn main() -> Result<(), PhollaitsError> {
 	/// 	let m = "6f5902ac237024bdd0c176cb93063dc4".to_string();
 	/// 	let m_as_bytes = m.hex_to_bytes()?;
 	/// 	assert_eq!(m_as_bytes, [111, 89, 2, 172, 35, 112, 36, 189, 208, 193, 118, 203, 147, 6, 61, 196]);
 	/// 	Ok(())
 	/// }
-	fn hex_to_bytes(self) -> Result<Vec<u8>, ParseIntError>;
+	fn hex_to_bytes(self) -> Result<Vec<u8>>;
 }
 
 impl StringExt for String {
@@ -146,17 +147,23 @@ impl StringExt for String {
 	    String::from(trimmed_string)
 	}
 
-	fn hex_to_bytes(self) -> Result<Vec<u8>, ParseIntError> {
-		fn inner_hex_to_bytes(s: &str) -> Result<u8, ParseIntError> {
+	fn hex_to_bytes(self) -> Result<Vec<u8>> {
+		fn inner_hex_to_bytes(s: &str) -> std::result::Result<u8, ParseIntError> {
 		    u8::from_str_radix(s, 16).map(|n| n as u8)
 		}
+		fn get_vec(chunks: Vec<String>) -> std::result::Result<Vec<u8>, ParseIntError> {
+	    	chunks.into_iter().map(|x| inner_hex_to_bytes(&x)).collect()
+	    }
 	    let mut chunks = Vec::new();
 	    let mut z = self.chars().peekable();
 	    while z.peek().is_some() {
 	    	let chunk: String = z.by_ref().take(2).collect();
 	    	chunks.push(chunk)
 	    }
-	    chunks.into_iter().map(|x| inner_hex_to_bytes(&x)).collect()
+	    match get_vec(chunks) {
+	    	Ok(x) => Ok(x),
+	    	Err(e) => Err(PhollaitsError::from(e))
+	    }
 	}
 }
 
@@ -187,18 +194,23 @@ impl StringExt for &str {
 		}
 	    String::from(trimmed_string)
 	}
-
-	fn hex_to_bytes(self) -> Result<Vec<u8>, ParseIntError> {
-		fn inner_hex_to_bytes(s: &str) -> Result<u8, ParseIntError> {
+	fn hex_to_bytes(self) -> Result<Vec<u8>> {
+		fn inner_hex_to_bytes(s: &str) -> std::result::Result<u8, ParseIntError> {
 		    u8::from_str_radix(s, 16).map(|n| n as u8)
 		}
+		fn get_vec(chunks: Vec<String>) -> std::result::Result<Vec<u8>, ParseIntError> {
+	    	chunks.into_iter().map(|x| inner_hex_to_bytes(&x)).collect()
+	    }
 	    let mut chunks = Vec::new();
 	    let mut z = self.chars().peekable();
 	    while z.peek().is_some() {
 	    	let chunk: String = z.by_ref().take(2).collect();
 	    	chunks.push(chunk)
 	    }
-	    chunks.into_iter().map(|x| inner_hex_to_bytes(&x)).collect()
+	    match get_vec(chunks) {
+	    	Ok(x) => Ok(x),
+	    	Err(e) => Err(PhollaitsError::from(e))
+	    }
 	}
 }
 

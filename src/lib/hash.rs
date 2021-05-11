@@ -1,14 +1,15 @@
 /*************************************************************************
-* ph0llux:898389c2dd61862f8c09742df9736eb44381b17e26eef45bf9d91210a6cf3463
+* ph0llux:ae4beac35ec8db28f7db2da81df2fbb50fbbf4b7b982b221a26c1d347887507d
 *************************************************************************/
 //!hash Module.
 
-// 
 // - STD
 use std::io;
 use std::io::Read;
 
-// 
+// - internal
+use super::{PhollaitsError, PhollaitsErrorKind, Result};
+
 // - external
 use data_encoding::HEXLOWER;
 use md5::Context as Md5Context;
@@ -32,7 +33,7 @@ pub trait HashExt {
 	/// 	Ok(())
 	/// }
 	/// ```
-	fn md5sum(&mut self) -> io::Result<String>;
+	fn md5sum(&mut self) -> Result<String>;
 
 	/// this method returns the sha1-digest for implemented types as a [std::io::Result]
 	/// of [String].
@@ -48,7 +49,7 @@ pub trait HashExt {
 	/// 	Ok(())
 	/// }
 	/// ```
-	fn sha1sum(&mut self) -> io::Result<String>;
+	fn sha1sum(&mut self) -> Result<String>;
 
 	/// this method returns the sha256-digest for implemented types as a [std::io::Result]
 	/// of [String].
@@ -64,7 +65,7 @@ pub trait HashExt {
 	/// 	Ok(())
 	/// }
 	/// ```
-	fn sha256sum(&mut self) -> io::Result<String>;
+	fn sha256sum(&mut self) -> Result<String>;
 
 	/// this method returns the sha384-digest for implemented types as a [std::io::Result]
 	/// of [String].
@@ -80,7 +81,7 @@ pub trait HashExt {
 	/// 	Ok(())
 	/// }
 	/// ```
-	fn sha384sum(&mut self) -> io::Result<String>;
+	fn sha384sum(&mut self) -> Result<String>;
 
 	/// this method returns the sha512-digest for implemented types as a [std::io::Result]
 	/// of [String].
@@ -96,15 +97,20 @@ pub trait HashExt {
 	/// 	Ok(())
 	/// }
 	/// ```
-	fn sha512sum(&mut self) -> io::Result<String>;
+	fn sha512sum(&mut self) -> Result<String>;
 }
 
 impl HashExt for dyn io::Read {
-	fn md5sum(&mut self) -> io::Result<String> {
+	fn md5sum(&mut self) -> Result<String> {
 		let mut context = Md5Context::new();
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -114,11 +120,16 @@ impl HashExt for dyn io::Read {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha1sum(&mut self) -> io::Result<String> {
+	fn sha1sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -128,11 +139,16 @@ impl HashExt for dyn io::Read {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha256sum(&mut self) -> io::Result<String> {
+	fn sha256sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA256);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -142,11 +158,16 @@ impl HashExt for dyn io::Read {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha384sum(&mut self) -> io::Result<String> {
+	fn sha384sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA384);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -156,11 +177,16 @@ impl HashExt for dyn io::Read {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha512sum(&mut self) -> io::Result<String> {
+	fn sha512sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA512);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -172,11 +198,16 @@ impl HashExt for dyn io::Read {
 }
 
 impl HashExt for std::fs::File {
-	fn md5sum(&mut self) -> io::Result<String> {
+	fn md5sum(&mut self) -> Result<String> {
 		let mut context = Md5Context::new();
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -186,11 +217,16 @@ impl HashExt for std::fs::File {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha1sum(&mut self) -> io::Result<String> {
+	fn sha1sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -200,11 +236,16 @@ impl HashExt for std::fs::File {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha256sum(&mut self) -> io::Result<String> {
+	fn sha256sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA256);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -214,11 +255,16 @@ impl HashExt for std::fs::File {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha384sum(&mut self) -> io::Result<String> {
+	fn sha384sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA384);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -228,11 +274,16 @@ impl HashExt for std::fs::File {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha512sum(&mut self) -> io::Result<String> {
+	fn sha512sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA512);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -244,11 +295,16 @@ impl HashExt for std::fs::File {
 }
 
 impl<R: io::Read> HashExt for Entry<'_, R> {
-	fn md5sum(&mut self) -> io::Result<String> {
+	fn md5sum(&mut self) -> Result<String> {
 		let mut context = Md5Context::new();
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -258,11 +314,16 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha1sum(&mut self) -> io::Result<String> {
+	fn sha1sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -272,11 +333,16 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha256sum(&mut self) -> io::Result<String> {
+	fn sha256sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA256);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -286,11 +352,16 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha384sum(&mut self) -> io::Result<String> {
+	fn sha384sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA384);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -300,11 +371,16 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha512sum(&mut self) -> io::Result<String> {
+	fn sha512sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA512);
 		let mut buffer = [0; 1024];
 		loop {
-			let count = self.read(&mut buffer)?;
+			let count = match self.read(&mut buffer){
+				Ok(x) => x,
+				Err(e) => return Err(PhollaitsError::new(
+					PhollaitsErrorKind::HashingError,
+					format!("Error while trying to hash input; {}", e.to_string())))
+			};
 			if count == 0 {
 				break;
 			}
@@ -316,35 +392,35 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 }
 
 impl HashExt for String {
-	fn md5sum(&mut self) -> io::Result<String> {
+	fn md5sum(&mut self) -> Result<String> {
 		let mut context = Md5Context::new();
 		context.consume(self.as_bytes());
 		let context = context.compute();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha1sum(&mut self) -> io::Result<String> {
+	fn sha1sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
 		context.update(self.as_bytes());
 		let context = context.finish();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha256sum(&mut self) -> io::Result<String> {
+	fn sha256sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA256);
 		context.update(self.as_bytes());
 		let context = context.finish();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha384sum(&mut self) -> io::Result<String> {
+	fn sha384sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA384);
 		context.update(self.as_bytes());
 		let context = context.finish();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha512sum(&mut self) -> io::Result<String> {
+	fn sha512sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA512);
 		context.update(self.as_bytes());
 		let context = context.finish();
@@ -353,35 +429,35 @@ impl HashExt for String {
 }
 
 impl HashExt for u64 {
-	fn md5sum(&mut self) -> io::Result<String> {
+	fn md5sum(&mut self) -> Result<String> {
 		let mut context = Md5Context::new();
 		context.consume(self.to_be_bytes());
 		let context = context.compute();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha1sum(&mut self) -> io::Result<String> {
+	fn sha1sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
 		context.update(&self.to_be_bytes());
 		let context = context.finish();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha256sum(&mut self) -> io::Result<String> {
+	fn sha256sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA256);
 		context.update(&self.to_be_bytes());
 		let context = context.finish();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha384sum(&mut self) -> io::Result<String> {
+	fn sha384sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA384);
 		context.update(&self.to_be_bytes());
 		let context = context.finish();
 		Ok(HEXLOWER.encode(context.as_ref()))
 	}
 
-	fn sha512sum(&mut self) -> io::Result<String> {
+	fn sha512sum(&mut self) -> Result<String> {
 		let mut context = ShaContext::new(&SHA512);
 		context.update(&self.to_be_bytes());
 		let context = context.finish();

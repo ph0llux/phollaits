@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:a7c871c14d482a1ec39aacfd1b71615d468c9cdd4d4bf3b69e130f6891760968
+* ph0llux:302f9d7a206ce2dc4667285a1e125a38bb51fa28f573d6ded4fb8dc2bf359dee
 *************************************************************************/
 // 
 // - STD
@@ -19,6 +19,7 @@ pub use hash::*;
 pub use stdext::*;
 pub use converter::*;
 pub use encoder::*;
+pub use errors::*;
 
 // 
 // - modules
@@ -27,13 +28,17 @@ mod hash;
 mod stdext;
 mod converter;
 mod encoder;
+mod errors;
+
+pub type Result<T> = std::result::Result<T, PhollaitsError>;
+
 
 pub trait ToIOResult<T> {
 	/// method to convert the underlying type to a [std::io::Result].
 	fn to_io_result(self) -> io::Result<T>;
 }
 
-impl<T, E: ToString> ToIOResult<T> for Result<T, E> {
+impl<T, E: ToString> ToIOResult<T> for std::result::Result<T, E> {
 	/// # Example
 	///	```rust
 	/// extern crate phollaits;
