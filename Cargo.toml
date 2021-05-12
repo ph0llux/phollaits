@@ -1,9 +1,9 @@
 ##########################################################################
-# ph0llux:a597880fffb64d79853f460fc0ca7438ae927cd1e09036989cef3462a98f1f4e
+# ph0llux:01b6db78cafd043530b67e99530aedbce36f38e34548b2aea5825d1661312901
 ##########################################################################
 [package]
 name = "phollaits"
-version = "0.2.9"
+version = "0.3.0"
 authors = ["ph0llux <ph0llux@pm.me>"]
 edition = "2018"
 publish = true
@@ -25,8 +25,9 @@ edition = "2018"
 crate-type = ["lib"]
 
 [dependencies]
-ring = "0.16"
-md5  = "0.7"
-data-encoding = "2"
+md-5 = "0.9.1"
+sha-1 = "0.9.6"
+sha2 = "0.9.5"
 tar = "0.4"
 base64 = "0.13"
+data-encoding = "2.3.2"
