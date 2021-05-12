@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:a86467de2013ba7be2ced2c78810fdcec8e2820e9933b52a500154bbb5872292
+* ph0llux:695abe2cd7c02e5c77cdd7ff1cf24df9be3fba2470acc91d9cdb71fb02dd9be2
 *************************************************************************/
 //!tar Module.
 
@@ -25,11 +25,13 @@ pub trait TarBuilderExt {
 	///
 	/// use phollaits::*;
 	/// use tar::Builder;
+	///	use std::fs;
 	///
 	/// fn main() {
-	/// 	let b = Builder::new("/tmp/archive.tar");
-	/// 	b.append_file_directly("/home/ph0llux/example01.png"); //appends a file (absoulte path)
-	/// 	b.append_file_directly("example02.png"); //appends a file (relative path)
+	///		let mut file = fs::File::create("/tmp/archive.tar").unwrap();
+	/// 	let mut b = Builder::new(file);
+	/// 	//b.append_file_directly("/etc/os-release"); //appends a file (absoulte path)
+	/// 	b.append_file_directly("assets/example.jpg"); //appends a file (relative path)
 	/// 	b.close_archive();
 	/// }
 	/// ```
@@ -43,9 +45,11 @@ pub trait TarBuilderExt {
 	///
 	/// use phollaits::*;
 	/// use tar::Builder;
+	/// use std::fs;
 	///
 	/// fn main() {
-	/// 	let b = Builder::new("/tmp/archive.tar");
+	///		let mut file = fs::File::create("/tmp/archive.tar").unwrap();
+	/// 	let mut b = Builder::new(file);
 	/// 	let content = "this is an example text";
 	/// 	let filename_in_archive = "/home/ph0llux/example01.txt";
 	/// 	b.append_text(filename_in_archive, content);

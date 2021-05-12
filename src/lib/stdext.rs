@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:7e8f52f4de01e2da71f71e2071d5501c6c9c3000cb14edd4a93a73bb01802cb5
+* ph0llux:8bdfff90b1391c04afb20ca2f246d5af5fef34f7d8688b39c3a36f9a85717d0f
 *************************************************************************/
 //! stdext module
 // - STD
@@ -8,17 +8,20 @@ use std::num::ParseIntError;
  
 // - internal
 use crate as phollaits;
-use phollaits::{PhollaitsError, Result};
+use crate::{PhollaitsError, Result};
 
 /// Trait contains some extensions for [bool].
 pub trait BoolExtensions {
 	/// method to reverse the value of a bool.
 	/// # Example
 	/// ```rust
+	/// extern crate phollaits;
+	/// use phollaits::{BoolExtensions};
+	///
 	/// fn main() {
-	/// 	let a = true;
+	/// 	let mut a = true;
 	/// 	a.reverse();
-	/// 	asserteq!(a, false);
+	/// 	assert_eq!(a, false);
 	/// }
 	/// ```
 	fn reverse(&mut self);
@@ -82,7 +85,7 @@ impl<T: ToString> OptionExtensions<T> for Option<T> {
 pub trait StringExt {
 	/// method to allow shell-like expansions in [String].
 	/// # Example to expand tilda
-	/// ```rust
+	/// ```no_run
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	///
@@ -227,12 +230,12 @@ impl VecExt for Vec<&str> {
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	/// 
-	///	const a: [&'static str; 6] = [ "a", "b", "c" ];
+	///	const a: [&'static str; 3] = [ "a", "b", "c" ];
 	///
 	/// fn main() {
-	/// 	let b = a.to_vec;
+	/// 	let b = a.to_vec();
 	///		let c = vec!("a".to_string(), "b".to_string(), "c".to_string());
-	/// 	assert_eq!(b.to_vec_string, c);
+	/// 	assert_eq!(b.to_vec_string(), c);
 	/// }
 	/// ```
 	fn to_vec_string(self) -> Vec<String> {

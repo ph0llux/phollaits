@@ -1,15 +1,17 @@
 /*************************************************************************
-* ph0llux:b672bbb1f54d525d95818ee050f0ad73088e9bd31fe7c07ed4225335c01e42e3
+* ph0llux:12814db628416164b3aa4728c497221589d1eac4cca7184a696fd0255b2df1cd
 *************************************************************************/
 // - STD
 use std::num::ParseIntError;
 use std::fmt;
 
+#[derive(Debug)]
 pub struct PhollaitsError {
 	details: String,
 	kind: PhollaitsErrorKind
 }
 
+#[derive(Debug)]
 pub enum PhollaitsErrorKind {
 	ParseIntError,
 	HashingError,
