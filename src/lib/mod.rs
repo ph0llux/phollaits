@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:302f9d7a206ce2dc4667285a1e125a38bb51fa28f573d6ded4fb8dc2bf359dee
+* ph0llux:52c87f4a434fb1b864ced400345a9a7e4e46be620a239a7b583376d30d57336d
 *************************************************************************/
 // 
 // - STD
@@ -9,7 +9,8 @@ use std::io;
 // - external
 extern crate data_encoding;
 extern crate md5;
-extern crate ring;
+extern crate sha1;
+extern crate sha2;
 extern crate base64;
 
 // 

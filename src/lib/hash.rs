@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:ae4beac35ec8db28f7db2da81df2fbb50fbbf4b7b982b221a26c1d347887507d
+* ph0llux:3a8f5e8522529c5e9e3fcf0e2013b21a1aae8665015986961cd830d286d0142d
 *************************************************************************/
 //!hash Module.
 
@@ -12,9 +12,9 @@ use super::{PhollaitsError, PhollaitsErrorKind, Result};
 
 // - external
 use data_encoding::HEXLOWER;
-use md5::Context as Md5Context;
-use ring::digest::Context as ShaContext;
-use ring::digest::{SHA1_FOR_LEGACY_USE_ONLY, SHA256, SHA384, SHA512};
+use md5::{Md5};
+use sha1::{Sha1};
+use sha2::{Sha256, Sha384, Sha512};
 use tar::Entry;
 
 /// This trait implements several hash-algorithms for several types.
@@ -102,7 +102,8 @@ pub trait HashExt {
 
 impl HashExt for dyn io::Read {
 	fn md5sum(&mut self) -> Result<String> {
-		let mut context = Md5Context::new();
+		use md5::Digest;
+		let mut hasher = Md5::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -114,14 +115,15 @@ impl HashExt for dyn io::Read {
 			if count == 0 {
 				break;
 			}
-			context.consume(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.compute();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha1sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
+		use sha1::Digest;
+		let mut hasher = Sha1::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -133,14 +135,15 @@ impl HashExt for dyn io::Read {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha256sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA256);
+		use sha2::Digest;
+		let mut hasher = Sha256::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -152,14 +155,15 @@ impl HashExt for dyn io::Read {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha384sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA384);
+		use sha2::Digest;
+		let mut hasher = Sha384::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -171,14 +175,15 @@ impl HashExt for dyn io::Read {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha512sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA512);
+		use sha2::Digest;
+		let mut hasher = Sha512::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -190,16 +195,17 @@ impl HashExt for dyn io::Read {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 }
 
 impl HashExt for std::fs::File {
 	fn md5sum(&mut self) -> Result<String> {
-		let mut context = Md5Context::new();
+		use md5::Digest;
+		let mut hasher = Md5::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -211,14 +217,15 @@ impl HashExt for std::fs::File {
 			if count == 0 {
 				break;
 			}
-			context.consume(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.compute();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha1sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
+		use sha1::Digest;
+		let mut hasher = Sha1::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -230,14 +237,15 @@ impl HashExt for std::fs::File {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha256sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA256);
+		use sha2::Digest;
+		let mut hasher = Sha256::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -249,14 +257,15 @@ impl HashExt for std::fs::File {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha384sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA384);
+		use sha2::Digest;
+		let mut hasher = Sha384::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -268,14 +277,15 @@ impl HashExt for std::fs::File {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha512sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA512);
+		use sha2::Digest;
+		let mut hasher = Sha512::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -287,16 +297,17 @@ impl HashExt for std::fs::File {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 }
 
 impl<R: io::Read> HashExt for Entry<'_, R> {
 	fn md5sum(&mut self) -> Result<String> {
-		let mut context = Md5Context::new();
+		use md5::Digest;
+		let mut hasher = Md5::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -308,14 +319,15 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 			if count == 0 {
 				break;
 			}
-			context.consume(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.compute();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha1sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
+		use sha1::Digest;
+		let mut hasher = Sha1::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -327,14 +339,15 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha256sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA256);
+		use sha2::Digest;
+		let mut hasher = Sha256::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -346,14 +359,15 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha384sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA384);
+		use sha2::Digest;
+		let mut hasher = Sha384::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -365,14 +379,15 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha512sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA512);
+		use sha2::Digest;
+		let mut hasher = Sha512::new();
 		let mut buffer = [0; 1024];
 		loop {
 			let count = match self.read(&mut buffer){
@@ -384,83 +399,93 @@ impl<R: io::Read> HashExt for Entry<'_, R> {
 			if count == 0 {
 				break;
 			}
-			context.update(&buffer[..count]);
+			hasher.update(&buffer[..count]);
 		}
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 }
 
 impl HashExt for String {
 	fn md5sum(&mut self) -> Result<String> {
-		let mut context = Md5Context::new();
-		context.consume(self.as_bytes());
-		let context = context.compute();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use md5::Digest;
+		let mut hasher = Md5::new();
+		hasher.update(self.as_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha1sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
-		context.update(self.as_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha1::Digest;
+		let mut hasher = Sha1::new();
+		hasher.update(self.as_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha256sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA256);
-		context.update(self.as_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha2::Digest;
+		let mut hasher = Sha256::new();
+		hasher.update(self.as_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha384sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA384);
-		context.update(self.as_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha2::Digest;
+		let mut hasher = Sha384::new();
+		hasher.update(self.as_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha512sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA512);
-		context.update(self.as_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha2::Digest;
+		let mut hasher = Sha512::new();
+		hasher.update(self.as_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 }
 
 impl HashExt for u64 {
 	fn md5sum(&mut self) -> Result<String> {
-		let mut context = Md5Context::new();
-		context.consume(self.to_be_bytes());
-		let context = context.compute();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use md5::Digest;
+		let mut hasher = Md5::new();
+		hasher.update(self.to_be_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha1sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA1_FOR_LEGACY_USE_ONLY);
-		context.update(&self.to_be_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha1::Digest;
+		let mut hasher = Sha1::new();
+		hasher.update(self.to_be_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha256sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA256);
-		context.update(&self.to_be_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha2::Digest;
+		let mut hasher = Sha256::new();
+		hasher.update(self.to_be_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha384sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA384);
-		context.update(&self.to_be_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha2::Digest;
+		let mut hasher = Sha384::new();
+		hasher.update(self.to_be_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 
 	fn sha512sum(&mut self) -> Result<String> {
-		let mut context = ShaContext::new(&SHA512);
-		context.update(&self.to_be_bytes());
-		let context = context.finish();
-		Ok(HEXLOWER.encode(context.as_ref()))
+		use sha2::Digest;
+		let mut hasher = Sha512::new();
+		hasher.update(self.to_be_bytes());
+		let hasher = hasher.finalize();
+		Ok(HEXLOWER.encode(hasher.as_ref()))
 	}
 }
