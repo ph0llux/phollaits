@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:52c87f4a434fb1b864ced400345a9a7e4e46be620a239a7b583376d30d57336d
+* ph0llux:5bade9a3fa0817dfbba6da19abaaa598628eff26f6f8616015c5ad79ae9c50de
 *************************************************************************/
 // 
 // - STD
@@ -41,7 +41,7 @@ pub trait ToIOResult<T> {
 
 impl<T, E: ToString> ToIOResult<T> for std::result::Result<T, E> {
 	/// # Example
-	///	```rust
+	///	```
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	/// use std::io;
@@ -62,7 +62,7 @@ impl<T, E: ToString> ToIOResult<T> for std::result::Result<T, E> {
 
 impl<T> ToIOResult<T> for Option<T> {
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	/// use std::io;

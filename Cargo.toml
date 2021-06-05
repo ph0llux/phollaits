@@ -1,9 +1,9 @@
 ##########################################################################
-# ph0llux:2604fc54eb9ce91fa55b2ba1501a3d7eaab53c06b8318469fad5259505eae059
+# ph0llux:e9fb0209be6830c6296d6fc34d9f35949edad14e97f866bde751a4bea83a7cb9
 ##########################################################################
 [package]
 name = "phollaits"
-version = "0.3.1"
+version = "0.3.2"
 authors = ["ph0llux <ph0llux@pm.me>"]
 edition = "2018"
 publish = true
@@ -21,6 +21,7 @@ name = "phollaits"
 path = "src/lib/mod.rs"
 test = true
 bench = true
+doc = true
 edition = "2018"
 crate-type = ["lib"]
 
@@ -31,3 +32,4 @@ sha2 = "0.9.5"
 tar = "0.4"
 base64 = "0.13"
 data-encoding = "2.3.2"
+hex = "0.4.3"

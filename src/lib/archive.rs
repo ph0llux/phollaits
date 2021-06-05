@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:695abe2cd7c02e5c77cdd7ff1cf24df9be3fba2470acc91d9cdb71fb02dd9be2
+* ph0llux:924ed9e854e417a2c055135d3d0a019d9dc3c1863b67640ca8446581845dcd82
 *************************************************************************/
 //!tar Module.
 
@@ -19,7 +19,7 @@ use super::{PhollaitsError, PhollaitsErrorKind, Result};
 pub trait TarBuilderExt {
 	/// appends a file to an archive.
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate tar;
 	/// extern crate phollaits;
 	///
@@ -39,7 +39,7 @@ pub trait TarBuilderExt {
 
 	/// appends a text (string) to an archive. The text will be written as a textfile, with the "unix-like" file permissions 644.
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate tar;
 	/// extern crate phollaits;
 	///

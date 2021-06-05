@@ -1,12 +1,12 @@
 /*************************************************************************
-* ph0llux:267577322be553ec80d14acfc1429831fd963519246bc372dbd187cc1c7c4d0f
+* ph0llux:490136e74316ecd15a68bc9d1b32f4c3eb6a72eafc585930fc614978a07c8936
 *************************************************************************/
 //!converter module
 
 pub trait HumanReadable {
 	/// get bytes in a human readable format (returned as [String]). Can be applied on several numeric types.
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	///

@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:ff33ab063141c2f6864e2031c29ae23326ee42f90ca77ab29f025b0751e9c76e
+* ph0llux:c08c5261c7afd62c018cd50059b5ecd3fcb16cec279b4a666579932bf9864fc7
 *************************************************************************/
 
 // - external
@@ -8,7 +8,7 @@ use base64::{encode};
 pub trait ToBase64 {
 	/// method converts the input to a base64 encoded [String].
 	/// # Example
-	/// ```rustc
+	/// ```
 	///
 	///	extern crate phollaits;
 	/// use phollaits::{ToBase64};

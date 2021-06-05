@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:f8117ce4f0439ce611ab7a7c7670e266510a0bffdddfa7aeea84ddb294e66e5a
+* ph0llux:61b17685413cf4b155779f471486c30048fd52a90925d481ea777267748130ff
 *************************************************************************/
 //!hash Module.
 
@@ -22,7 +22,7 @@ pub trait HashExt {
 	/// this method returns the md5-digest for implemented types as a [std::io::Result]
 	/// of [String].
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::{HashExt, Result};
 	/// use std::fs;
@@ -60,7 +60,7 @@ pub trait HashExt {
 	/// this method returns the sha1-digest for implemented types as a [std::io::Result]
 	/// of [String].
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::{HashExt, Result};
 	/// use std::fs;
@@ -98,7 +98,7 @@ pub trait HashExt {
 	/// this method returns the sha256-digest for implemented types as a [std::io::Result]
 	/// of [String].
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::{HashExt, Result};
 	/// use std::fs;
@@ -136,7 +136,7 @@ pub trait HashExt {
 	/// this method returns the sha384-digest for implemented types as a [std::io::Result]
 	/// of [String].
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::{HashExt, Result};
 	/// use std::fs;
@@ -174,7 +174,7 @@ pub trait HashExt {
 	/// this method returns the sha512-digest for implemented types as a [std::io::Result]
 	/// of [String].
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::{HashExt, Result};
 	/// use std::fs;

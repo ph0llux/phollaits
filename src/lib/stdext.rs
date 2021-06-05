@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:8bdfff90b1391c04afb20ca2f246d5af5fef34f7d8688b39c3a36f9a85717d0f
+* ph0llux:7b80a7a0bc97f58fa1fec47b3f4c36d4b8294de60c8b3a8a13ae3eb4f92a8d21
 *************************************************************************/
 //! stdext module
 // - STD
@@ -14,7 +14,7 @@ use crate::{PhollaitsError, Result};
 pub trait BoolExtensions {
 	/// method to reverse the value of a bool.
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::{BoolExtensions};
 	///
@@ -45,7 +45,7 @@ pub trait OptionExtensions<T> {
 impl<T: ToString> OptionExtensions<T> for Option<T> {
 	/// method to allow a conversion of Option<str> to Option<String> directly.
 	/// # Example
-	/// ```rust
+	/// ```
 	///
 	/// extern crate phollaits;
 	/// use phollaits::*;
@@ -64,7 +64,7 @@ impl<T: ToString> OptionExtensions<T> for Option<T> {
 
 	/// method to allow a conversion of Option<T> to String directly (if T implements the [ToString]-trait).
 	/// # Example
-	/// ```rust
+	/// ```
 	///
 	/// extern crate phollaits;
 	/// use phollaits::*;
@@ -99,7 +99,7 @@ pub trait StringExt {
 
 	/// method to trims newline at the end of the string.
 	/// # Example to expand tilda
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	///
@@ -113,12 +113,14 @@ pub trait StringExt {
 
 	/// converts a 'hexified' String to a Vec of Bytes.
 	/// # Example
+	/// ```
 	/// fn main() -> Result<(), PhollaitsError> {
 	/// 	let m = "6f5902ac237024bdd0c176cb93063dc4".to_string();
 	/// 	let m_as_bytes = m.hex_to_bytes()?;
 	/// 	assert_eq!(m_as_bytes, [111, 89, 2, 172, 35, 112, 36, 189, 208, 193, 118, 203, 147, 6, 61, 196]);
 	/// 	Ok(())
 	/// }
+	/// ```
 	fn hex_to_bytes(self) -> Result<Vec<u8>>;
 }
 
@@ -226,7 +228,7 @@ pub trait VecExt {
 impl VecExt for Vec<&str> {
 	/// method to convert Vec<&str> into Vec<String>.
 	/// # Example
-	/// ```rust
+	/// ```
 	/// extern crate phollaits;
 	/// use phollaits::*;
 	/// 
