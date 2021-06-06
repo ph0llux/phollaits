@@ -1,5 +1,5 @@
 /*************************************************************************
-* ph0llux:7b80a7a0bc97f58fa1fec47b3f4c36d4b8294de60c8b3a8a13ae3eb4f92a8d21
+* ph0llux:4fcc63e8c9eac6fae126761c91ea5dca3e9f6303efb0efc6939d58f2c124774c
 *************************************************************************/
 //! stdext module
 // - STD
@@ -114,6 +114,8 @@ pub trait StringExt {
 	/// converts a 'hexified' String to a Vec of Bytes.
 	/// # Example
 	/// ```
+	///	use phollaits::{StringExt, PhollaitsError};
+	///
 	/// fn main() -> Result<(), PhollaitsError> {
 	/// 	let m = "6f5902ac237024bdd0c176cb93063dc4".to_string();
 	/// 	let m_as_bytes = m.hex_to_bytes()?;
