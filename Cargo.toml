@@ -1,9 +1,9 @@
 ##########################################################################
-# ph0llux:e9fb0209be6830c6296d6fc34d9f35949edad14e97f866bde751a4bea83a7cb9
+# ph0llux:c126f04c4f3f252a930e45b13e60007f5383ca910bade006b46c255837399ff3
 ##########################################################################
 [package]
 name = "phollaits"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["ph0llux <ph0llux@pm.me>"]
 edition = "2018"
 publish = true
